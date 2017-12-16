@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+					"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="org.smart.dao.VoteMapper">
+	
+	<select id="listTitles" resultType="org.smart.domain.Title">
+		SELECT * FROM title
+	</select>
+	
+	<select id="getOptionsByTid" parameterType="integer" resultType="org.smart.domain.Option">
+		SELECT * FROM `option` WHERE tid=#{tid}
+	</select>
+	
+	
+	<update id="updateVoteResultById" parameterType="integer">
+		UPDATE `option` SET `count`=`count`+1 WHERE id=#{id}
+	</update>
+	
+	<delete id="deleteAllOptionsByTid" parameterType="integer">
+		DELETE FROM `option` where tid=#{tid}
+	</delete>
+	
+	<insert id="updateOption" parameterType="map">
+		INSERT INTO `option` VALUES
+		<foreach collection="option" item="op" separator=",">
+			(NULL,#{op},#{tid},0)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteTitleById" parameterType="integer">
+		DELETE FROM title WHERE id=#{id}
+	</delete>
+	
+	<insert id="addTitle" parameterType="org.smart.domain.Title" useGeneratedKeys="true"
+	  keyProperty="id">
+		INSERT INTO title VALUES(NULL,#{name});
+	</insert>
+	
+	<select id="findTitleByName" parameterType="string"
+		resultType="org.smart.domain.Title">
+		SELECT * FROM title WHERE `name` LIKE '%' + #{titleName} + '%'
+	</select>
+	
+</mapper>
+					
+		
